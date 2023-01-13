@@ -30,7 +30,7 @@ usersRouter.get('/',
     res.send(returnedUsers)
 
 })
-
+//superAdmin
 usersRouter.post('/',
     basicAuthMiddleware,
     loginValidation,

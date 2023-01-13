@@ -16,7 +16,7 @@ export const usersService = {
             passwordHash: passwordHash,
             createdAt: new Date().toISOString()
         }
-        return await usersRepository.createUser(newDbUser)
+        return await usersRepository.createUserByAdmin(newDbUser)
     },
 
     async checkCredentials(body: authInputModel): Promise<userDbType | null> {

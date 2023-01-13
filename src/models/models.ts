@@ -89,12 +89,32 @@ export type userViewModel = {
     createdAt: string
 }
 
+
+
 export type userDbType = {
     _id: Object
     login: string
     email: string
     passwordHash: string
     createdAt: string
+}
+export type userAccountDbType = {
+    _id: Object
+    accountData: {
+        login: string
+        email: string
+        createdAt: string
+        passwordHash: string
+    }
+    emailConfirmation: {
+        confirmationCode: any
+        expirationDate: any
+        isConfirmed: boolean
+    }
+}
+
+export type registrationConfirmationInput = {
+    code: string
 }
 
 export type authInputModel = {
