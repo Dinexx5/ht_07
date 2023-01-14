@@ -1,24 +1,25 @@
 import nodemailer from 'nodemailer'
-import {createUserInputModel} from "../models/models";
 
 export const emailAdapter = {
 
-    async sendEmail(email: string) {
+    async sendEmailForConfirmation(email: string, code: string) {
 
         let transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: "smtp.mail.ru",
+            port: 587,
+            secure: false,
             auth: {
-                user: "d.diubajlo@gmail.com", // generated ethereal user
-                pass: "jddznidsftiumyqi", // generated ethereal password
-            }
+                user: 'd.diubajlo.test@mail.ru',
+                pass: '1peqS8TSzP0ZmVCKVLTV'
+            },
         })
 
-        // send mail with defined transport object
+
         let info = await transporter.sendMail({
-            from: 'dimkaDev', // sender address
-            to: email, // list of receivers
-            subject: "Succefful registration", // Subject line
-            html: "<b>You successfully registered to the best backend API</b>", // html body
+            from: 'd.diubajlo.test@mail.ru',
+            to: email,
+            subject: "Succefful registration",
+            html: `href='https://somesite.com/confirm-email?code=${code}'`,
         })
         return info
 

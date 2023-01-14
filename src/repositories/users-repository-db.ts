@@ -4,13 +4,13 @@ import {ObjectId} from "mongodb";
 
 
 export const usersRepository = {
-    async createUserByAdmin(newDbUser: userDbType): Promise<userViewModel> {
-        await usersCollection.insertOne(newDbUser)
+    async createUserByAdmin(newDbUser: userAccountDbType): Promise<userViewModel> {
+        await userAccountsCollection.insertOne(newDbUser)
         return {
             id: newDbUser._id.toString(),
-            login: newDbUser.login,
-            email: newDbUser.email,
-            createdAt: newDbUser.createdAt
+            login: newDbUser.accountData.login,
+            email: newDbUser.accountData.email,
+            createdAt: newDbUser.accountData.createdAt
         }
 
     },
@@ -21,22 +21,31 @@ export const usersRepository = {
 
     },
     //checkCredentials
-    async findByLoginOrEmail(loginOrEmail: string): Promise<userDbType | null> {
-        return await usersCollection.findOne( {$or: [{email: loginOrEmail}, {login: loginOrEmail}] } )
+    async findByLoginOrEmail(loginOrEmail: string): Promise<userAccountDbType | null> {
+        return await userAccountsCollection.findOne( {$or: [{'accountData.email': loginOrEmail}, {'accountData.login': loginOrEmail}] } )
     },
 
     async deleteUserById(id:string): Promise<boolean> {
         let _id = new ObjectId(id)
-        let result = await usersCollection.deleteOne({_id: _id})
+        let result = await userAccountsCollection.deleteOne({_id: _id})
         return result.deletedCount === 1
 
     },
 
     // req.user in bearerAuthMiddleware
-    async findUserById(userId: Object): Promise<userDbType> {
-        let user = await usersCollection.findOne({_id: userId})
+    async findUserById(userId: Object): Promise<userAccountDbType> {
+        let user = await userAccountsCollection.findOne({_id: userId})
         return user!
     },
+
+    async findUserByEmail(email: string): Promise<userAccountDbType | null> {
+        let user = await userAccountsCollection.findOne({'accountData.email': email})
+        if (!user) {
+            return null
+        }
+        return user
+    },
+
 
     async findUserByConfirmationCode(code: string): Promise<userAccountDbType | null> {
         let user = await userAccountsCollection.findOne({'emailConfirmation.confirmationCode': code})
@@ -50,5 +59,6 @@ export const usersRepository = {
         let result = await userAccountsCollection.updateOne({_id}, {$set: {'emailConfirmation.isConfirmed': true} })
         return result.modifiedCount === 1
     }
+
 
 }

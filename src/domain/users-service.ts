@@ -1,38 +1,33 @@
 import {usersRepository} from "../repositories/users-repository-db";
-import {authInputModel, createUserInputModel, userDbType, userViewModel} from "../models/models";
+import {authInputModel, createUserInputModel, userAccountDbType, userDbType, userViewModel} from "../models/models";
 import bcrypt from 'bcrypt'
 import {ObjectId} from "mongodb";
+import {v4 as uuidv4} from "uuid";
+import add from "date-fns/add";
 
 export const usersService = {
-
+//by superAdmin
     async createUser(body: createUserInputModel): Promise<userViewModel> {
         const {login , email, password} = body
         const passwordSalt = await bcrypt.genSalt(10)
         const passwordHash = await bcrypt.hash(password, passwordSalt)
-        const newDbUser: userDbType = {
+        const newDbAccount: userAccountDbType = {
             _id: new ObjectId(),
-            login: login,
-            email: email,
-            passwordHash: passwordHash,
-            createdAt: new Date().toISOString()
+            accountData: {
+                login: login,
+                email: email,
+                passwordHash: passwordHash,
+                createdAt: new Date().toISOString()
+            },
+            emailConfirmation: {
+                confirmationCode: uuidv4(),
+                expirationDate: add(new Date(), {
+                    hours: 1
+                }),
+                isConfirmed: true
+            }
         }
-        return await usersRepository.createUserByAdmin(newDbUser)
-    },
-
-    async checkCredentials(body: authInputModel): Promise<userDbType | null> {
-        const {loginOrEmail, password} = body
-        const user = await usersRepository.findByLoginOrEmail(loginOrEmail)
-        if (!user) {
-            return null
-        }
-        const isValidPassword = await bcrypt.compare(password, user.passwordHash)
-
-        if (!isValidPassword) {
-            return null
-        }
-        return user
-
-
+        return await usersRepository.createUserByAdmin(newDbAccount)
     },
 
 
@@ -42,8 +37,11 @@ export const usersService = {
     },
 
     // req.user in bearerAuthMiddleware
-    async findUserById(userId: Object): Promise<userDbType> {
+    async findUserById(userId: Object): Promise<userAccountDbType> {
         return await usersRepository.findUserById(userId)
 
+    },
+    async findUserByEmail(email: string): Promise<userAccountDbType | null> {
+        return await usersRepository.findUserByEmail(email)
     }
 }

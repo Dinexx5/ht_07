@@ -112,6 +112,9 @@ export type userAccountDbType = {
         isConfirmed: boolean
     }
 }
+export type resendEmailModel = {
+    email: string
+}
 
 export type registrationConfirmationInput = {
     code: string

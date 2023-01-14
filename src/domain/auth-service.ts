@@ -30,7 +30,7 @@ export const authService = {
         }
         const result = await usersRepository.createUser(newDbAccount)
         try {
-            await emailService.sendEmailForConfirmation(email)
+            await emailService.sendEmailForConfirmation(email, newDbAccount.emailConfirmation.confirmationCode)
         } catch(error) {
             console.error(error)
             const id = newDbAccount._id.toString()
@@ -42,29 +42,20 @@ export const authService = {
 
     async confirmEmail(code: string): Promise<boolean> {
         let user = await usersRepository.findUserByConfirmationCode(code)
-        if (!user) {
-            return false
-        }
-        if (user.emailConfirmation.isConfirmed) {
-            return false
-        }
-        if (user.emailConfirmation.confirmationCode !== code) {
-            return false
-        }
-        if (user.emailConfirmation.expirationDate < new Date()) {
-            return false
-        }
-        return await usersRepository.updateConfirmation(user._id)
+        return await usersRepository.updateConfirmation(user!._id)
 
     },
 
-    async checkCredentials (body: authInputModel): Promise<userDbType | null> {
+    async checkCredentials (body: authInputModel): Promise<userAccountDbType | null> {
         const {loginOrEmail, password} = body
         const user = await usersRepository.findByLoginOrEmail(loginOrEmail)
         if (!user) {
             return null
         }
-        const isValidPassword = await bcrypt.compare(password, user.passwordHash)
+        if (!user.emailConfirmation.isConfirmed) {
+            return null
+        }
+        const isValidPassword = await bcrypt.compare(password, user.accountData.passwordHash)
 
         if (!isValidPassword) {
             return null
@@ -73,5 +64,14 @@ export const authService = {
 
 
     },
+    async resendEmail(email:string, code: string): Promise<boolean> {
+        try {
+            await emailService.sendEmailForConfirmation(email, code)
+        } catch(error) {
+            console.error(error)
+            return false
+        }
+        return true
+    }
 
 }
