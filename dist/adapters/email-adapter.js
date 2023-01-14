@@ -23,15 +23,14 @@ exports.emailAdapter = {
                 secure: false,
                 auth: {
                     user: 'd.diubajlo.test@mail.ru',
-                    pass: '1peqS8TSzP0ZmVCKVLTV' // generated ethereal password
+                    pass: '1peqS8TSzP0ZmVCKVLTV'
                 },
             });
-            // send mail with defined transport object
             let info = yield transporter.sendMail({
                 from: 'd.diubajlo.test@mail.ru',
                 to: email,
                 subject: "Succefful registration",
-                html: `href='https://somesite.com/confirm-email?code=${code}'`, // html body
+                html: `href='https://somesite.com/confirm-email?code=${code}'`,
             });
             return info;
         });

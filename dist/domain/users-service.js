@@ -16,34 +16,32 @@ exports.usersService = void 0;
 const users_repository_db_1 = require("../repositories/users-repository-db");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const mongodb_1 = require("mongodb");
+const uuid_1 = require("uuid");
+const add_1 = __importDefault(require("date-fns/add"));
 exports.usersService = {
+    //by superAdmin
     createUser(body) {
         return __awaiter(this, void 0, void 0, function* () {
             const { login, email, password } = body;
             const passwordSalt = yield bcrypt_1.default.genSalt(10);
             const passwordHash = yield bcrypt_1.default.hash(password, passwordSalt);
-            const newDbUser = {
+            const newDbAccount = {
                 _id: new mongodb_1.ObjectId(),
-                login: login,
-                email: email,
-                passwordHash: passwordHash,
-                createdAt: new Date().toISOString()
+                accountData: {
+                    login: login,
+                    email: email,
+                    passwordHash: passwordHash,
+                    createdAt: new Date().toISOString()
+                },
+                emailConfirmation: {
+                    confirmationCode: (0, uuid_1.v4)(),
+                    expirationDate: (0, add_1.default)(new Date(), {
+                        hours: 1
+                    }),
+                    isConfirmed: true
+                }
             };
-            return yield users_repository_db_1.usersRepository.createUserByAdmin(newDbUser);
-        });
-    },
-    checkCredentials(body) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { loginOrEmail, password } = body;
-            const user = yield users_repository_db_1.usersRepository.findByLoginOrEmail(loginOrEmail);
-            if (!user) {
-                return null;
-            }
-            const isValidPassword = yield bcrypt_1.default.compare(password, user.passwordHash);
-            if (!isValidPassword) {
-                return null;
-            }
-            return user;
+            return yield users_repository_db_1.usersRepository.createUserByAdmin(newDbAccount);
         });
     },
     deleteUserById(userId) {
@@ -55,6 +53,11 @@ exports.usersService = {
     findUserById(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield users_repository_db_1.usersRepository.findUserById(userId);
+        });
+    },
+    findUserByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield users_repository_db_1.usersRepository.findUserByEmail(email);
         });
     }
 };

@@ -9,11 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.confirmationCodeValidation = exports.commentContentValidation = exports.passwordAuthValidation = exports.loginOrEmailValidation = exports.emailValidation = exports.passwordValidation = exports.loginValidation = exports.blogIdlValidation = exports.postContentValidation = exports.shortDescriptionValidation = exports.titleValidation = exports.websiteUrlValidation = exports.descriptionValidation = exports.nameValidation = exports.objectIdIsValidMiddleware = exports.inputValidationMiddleware = void 0;
+exports.confirmationCodeValidation = exports.commentContentValidation = exports.passwordAuthValidation = exports.loginOrEmailValidation = exports.emailValidationForResending = exports.emailValidation = exports.passwordValidation = exports.loginValidation = exports.blogIdlValidation = exports.postContentValidation = exports.shortDescriptionValidation = exports.titleValidation = exports.websiteUrlValidation = exports.descriptionValidation = exports.nameValidation = exports.objectIdIsValidMiddleware = exports.inputValidationMiddleware = void 0;
 const express_validator_1 = require("express-validator");
 const blogs_query_repository_1 = require("../repositories/blogs-query-repository");
 const mongodb_1 = require("mongodb");
 const users_repository_db_1 = require("../repositories/users-repository-db");
+const users_service_1 = require("../domain/users-service");
 const myValidationResult = express_validator_1.validationResult.withDefaults({
     formatter: error => {
         return {
@@ -61,9 +62,19 @@ exports.loginValidation = (0, express_validator_1.body)('login').trim().isLength
 exports.passwordValidation = (0, express_validator_1.body)('password').trim().isLength({ min: 6, max: 20 }).withMessage('Incorrect length').not().isEmpty().withMessage('Not a string');
 exports.emailValidation = (0, express_validator_1.body)('email').trim().isEmail().withMessage('Not an email')
     .custom((email) => __awaiter(void 0, void 0, void 0, function* () {
-    const isUserAlreadyCreated = yield users_repository_db_1.usersRepository.findUserByEmail(email);
-    if (isUserAlreadyCreated) {
+    const isUser = yield users_service_1.usersService.findUserByEmail(email);
+    if (isUser) {
         throw new Error('user with provided email already exists');
+    }
+}));
+exports.emailValidationForResending = (0, express_validator_1.body)('email').trim().isEmail().withMessage('Not an email')
+    .custom((email) => __awaiter(void 0, void 0, void 0, function* () {
+    const isUser = yield users_service_1.usersService.findUserByEmail(email);
+    if (!isUser) {
+        throw new Error('user with provided email does not exist');
+    }
+    if (isUser.emailConfirmation.isConfirmed) {
+        throw new Error('email is already confirmed');
     }
 }));
 //auth validation

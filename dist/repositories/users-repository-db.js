@@ -15,12 +15,12 @@ const mongodb_1 = require("mongodb");
 exports.usersRepository = {
     createUserByAdmin(newDbUser) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.usersCollection.insertOne(newDbUser);
+            yield db_1.userAccountsCollection.insertOne(newDbUser);
             return {
                 id: newDbUser._id.toString(),
-                login: newDbUser.login,
-                email: newDbUser.email,
-                createdAt: newDbUser.createdAt
+                login: newDbUser.accountData.login,
+                email: newDbUser.accountData.email,
+                createdAt: newDbUser.accountData.createdAt
             };
         });
     },
@@ -33,20 +33,20 @@ exports.usersRepository = {
     //checkCredentials
     findByLoginOrEmail(loginOrEmail) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield db_1.usersCollection.findOne({ $or: [{ email: loginOrEmail }, { login: loginOrEmail }] });
+            return yield db_1.userAccountsCollection.findOne({ $or: [{ 'accountData.email': loginOrEmail }, { 'accountData.login': loginOrEmail }] });
         });
     },
     deleteUserById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             let _id = new mongodb_1.ObjectId(id);
-            let result = yield db_1.usersCollection.deleteOne({ _id: _id });
+            let result = yield db_1.userAccountsCollection.deleteOne({ _id: _id });
             return result.deletedCount === 1;
         });
     },
     // req.user in bearerAuthMiddleware
     findUserById(userId) {
         return __awaiter(this, void 0, void 0, function* () {
-            let user = yield db_1.usersCollection.findOne({ _id: userId });
+            let user = yield db_1.userAccountsCollection.findOne({ _id: userId });
             return user;
         });
     },
@@ -54,9 +54,9 @@ exports.usersRepository = {
         return __awaiter(this, void 0, void 0, function* () {
             let user = yield db_1.userAccountsCollection.findOne({ 'accountData.email': email });
             if (!user) {
-                return false;
+                return null;
             }
-            return true;
+            return user;
         });
     },
     findUserByConfirmationCode(code) {

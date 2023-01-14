@@ -20,7 +20,7 @@ exports.commentsRepository = {
                 content: content,
                 createdAt: new Date().toISOString(),
                 userId: user._id.toString(),
-                userLogin: user.login,
+                userLogin: user.accountData.login,
                 postId: postId
             };
             yield db_1.commentsCollection.insertOne(commentDb);

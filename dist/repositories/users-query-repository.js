@@ -13,9 +13,9 @@ exports.usersQueryRepository = void 0;
 const db_1 = require("./db");
 function mapDbUserToUserViewModel(user) {
     return {
-        login: user.login,
-        email: user.email,
-        createdAt: user.createdAt,
+        login: user.accountData.login,
+        email: user.accountData.email,
+        createdAt: user.accountData.createdAt,
         id: user._id.toString()
     };
 }
@@ -26,9 +26,9 @@ exports.usersQueryRepository = {
             const sortDirectionInt = sortDirection === "desc" ? -1 : 1;
             const skippedUsersCount = (+pageNumber - 1) * +pageSize;
             if (searchLoginTerm && !searchEmailTerm) {
-                const countAllWithSearchLoginTerm = yield db_1.usersCollection.countDocuments({ login: { $regex: searchLoginTerm, $options: 'i' } });
-                const usersDb = yield db_1.usersCollection
-                    .find({ login: { $regex: searchLoginTerm, $options: 'i' } })
+                const countAllWithSearchLoginTerm = yield db_1.userAccountsCollection.countDocuments({ 'accountData.login': { $regex: searchLoginTerm, $options: 'i' } });
+                const usersDb = yield db_1.userAccountsCollection
+                    .find({ 'accountData.login': { $regex: searchLoginTerm, $options: 'i' } })
                     .sort({ [sortBy]: sortDirectionInt })
                     .skip(skippedUsersCount)
                     .limit(+pageSize)
@@ -43,9 +43,9 @@ exports.usersQueryRepository = {
                 };
             }
             if (searchEmailTerm && !searchLoginTerm) {
-                const countAllWithSearchEmailTerm = yield db_1.usersCollection.countDocuments({ email: { $regex: searchEmailTerm, $options: 'i' } });
-                const usersDb = yield db_1.usersCollection
-                    .find({ email: { $regex: searchEmailTerm, $options: 'i' } })
+                const countAllWithSearchEmailTerm = yield db_1.userAccountsCollection.countDocuments({ 'accountData.email': { $regex: searchEmailTerm, $options: 'i' } });
+                const usersDb = yield db_1.userAccountsCollection
+                    .find({ 'accountData.email': { $regex: searchEmailTerm, $options: 'i' } })
                     .sort({ [sortBy]: sortDirectionInt })
                     .skip(skippedUsersCount)
                     .limit(+pageSize)
@@ -60,9 +60,9 @@ exports.usersQueryRepository = {
                 };
             }
             if (searchLoginTerm && searchEmailTerm) {
-                const countAllWithBothTerms = yield db_1.usersCollection.countDocuments({ $or: [{ email: { $regex: searchEmailTerm, $options: 'i' } }, { login: { $regex: searchLoginTerm, $options: 'i' } }] });
-                const usersDb = yield db_1.usersCollection
-                    .find({ $or: [{ email: { $regex: searchEmailTerm, $options: 'i' } }, { login: { $regex: searchLoginTerm, $options: 'i' } }] })
+                const countAllWithBothTerms = yield db_1.userAccountsCollection.countDocuments({ $or: [{ 'accountData.email': { $regex: searchEmailTerm, $options: 'i' } }, { 'accountData.login': { $regex: searchLoginTerm, $options: 'i' } }] });
+                const usersDb = yield db_1.userAccountsCollection
+                    .find({ $or: [{ 'accountData.email': { $regex: searchEmailTerm, $options: 'i' } }, { 'accountData.login': { $regex: searchLoginTerm, $options: 'i' } }] })
                     .sort({ [sortBy]: sortDirectionInt })
                     .skip(skippedUsersCount)
                     .limit(+pageSize)
@@ -76,8 +76,8 @@ exports.usersQueryRepository = {
                     items: usersView
                 };
             }
-            const countAll = yield db_1.usersCollection.countDocuments();
-            const usersDb = yield db_1.usersCollection
+            const countAll = yield db_1.userAccountsCollection.countDocuments();
+            const usersDb = yield db_1.userAccountsCollection
                 .find({})
                 .sort({ [sortBy]: sortDirectionInt })
                 .skip(skippedUsersCount)

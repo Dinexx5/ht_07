@@ -1,10 +1,10 @@
-import {userDbType} from "../models/models";
+import {userAccountDbType, userDbType} from "../models/models";
 import {commentsRepository} from "../repositories/comments/comments-repository";
 
 
 
 export const commentsService = {
-    async createComment (content: string, user: userDbType, postId: string) {
+    async createComment (content: string, user: userAccountDbType, postId: string) {
         return await commentsRepository.createComment(content, user, postId)
     },
 

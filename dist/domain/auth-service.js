@@ -67,11 +67,26 @@ exports.authService = {
             if (!user) {
                 return null;
             }
-            const isValidPassword = yield bcrypt_1.default.compare(password, user.passwordHash);
+            if (!user.emailConfirmation.isConfirmed) {
+                return null;
+            }
+            const isValidPassword = yield bcrypt_1.default.compare(password, user.accountData.passwordHash);
             if (!isValidPassword) {
                 return null;
             }
             return user;
         });
     },
+    resendEmail(email, code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield email_service_1.emailService.sendEmailForConfirmation(email, code);
+            }
+            catch (error) {
+                console.error(error);
+                return false;
+            }
+            return true;
+        });
+    }
 };

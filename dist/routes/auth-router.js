@@ -18,7 +18,7 @@ const auth_middlewares_1 = require("../middlewares/auth-middlewares");
 const auth_service_1 = require("../domain/auth-service");
 exports.authRouter = (0, express_1.Router)({});
 exports.authRouter.post('/login', input_validation_1.loginOrEmailValidation, input_validation_1.passwordAuthValidation, input_validation_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield users_service_1.usersService.checkCredentials(req.body);
+    const user = yield auth_service_1.authService.checkCredentials(req.body);
     if (!user) {
         res.send(401);
         return;
@@ -30,8 +30,8 @@ exports.authRouter.post('/login', input_validation_1.loginOrEmailValidation, inp
 exports.authRouter.get('/me', auth_middlewares_1.bearerAuthMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
     res.send({
-        "email": user.email,
-        "login": user.login,
+        "email": user.accountData.email,
+        "login": user.accountData.login,
         "userId": user._id.toString()
     });
 }));
@@ -46,6 +46,20 @@ exports.authRouter.post('/registration', input_validation_1.loginValidation, inp
 }));
 exports.authRouter.post('/registration-confirmation', input_validation_1.confirmationCodeValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = auth_service_1.authService.confirmEmail(req.body.code);
+    if (!result) {
+        return res.send(400);
+    }
+    res.send(204);
+}));
+exports.authRouter.post('/registration-email-resending', input_validation_1.emailValidationForResending, input_validation_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield users_service_1.usersService.findUserByEmail(req.body.email);
+    const confirmationCode = user.emailConfirmation.confirmationCode;
+    const isEmailResend = yield auth_service_1.authService.resendEmail(req.body.email, confirmationCode);
+    if (!isEmailResend) {
+        res.send({ "errorsMessages": 'can not send email. try later' });
+        return;
+    }
+    const result = auth_service_1.authService.confirmEmail(confirmationCode);
     if (!result) {
         return res.send(400);
     }
