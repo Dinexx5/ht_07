@@ -65,6 +65,7 @@ export const emailValidation = body('email').trim().isEmail().withMessage('Not a
         if (isUser) {
             throw new Error('user with provided email already exists');
         }
+        return true
     })
 export const emailValidationForResending = body('email').trim().isEmail().withMessage('Not an email')
     .custom(async (email) => {
@@ -75,6 +76,7 @@ export const emailValidationForResending = body('email').trim().isEmail().withMe
         if (isUser.emailConfirmation.isConfirmed) {
             throw new Error('email is already confirmed');
         }
+        return true
     })
 
 //auth validation

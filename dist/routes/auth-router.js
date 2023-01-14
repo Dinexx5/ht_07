@@ -42,7 +42,6 @@ exports.authRouter.post('/registration', input_validation_1.loginValidation, inp
         res.send({ "errorsMessages": 'can not send email. try later' });
         return;
     }
-    console.log(result);
     res.send(204);
 }));
 exports.authRouter.post('/registration-confirmation', input_validation_1.confirmationCodeValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
