@@ -39,7 +39,7 @@ exports.authRouter.get('/me', auth_middlewares_1.bearerAuthMiddleware, (req, res
 exports.authRouter.post('/registration', input_validation_1.loginValidation, input_validation_1.emailValidation, input_validation_1.passwordValidation, input_validation_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.authService.createUser(req.body);
     if (!result) {
-        res.send({ "errorsMessages": 'can not send email. try later' });
+        res.status(201).send({ "errorsMessages": 'can not send email. try later' });
         return;
     }
     res.send(204);

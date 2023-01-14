@@ -56,7 +56,7 @@ authRouter.post('/registration',
 
     const result = await authService.createUser(req.body)
     if (!result) {
-        res.send({"errorsMessages": 'can not send email. try later'})
+        res.status(201).send({"errorsMessages": 'can not send email. try later'})
         return
     }
     res.send(204)
