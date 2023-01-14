@@ -42,14 +42,14 @@ exports.authRouter.post('/registration', input_validation_1.loginValidation, inp
         res.send({ "errorsMessages": 'can not send email. try later' });
         return;
     }
-    res.send(204);
+    res.status(204).send();
 }));
 exports.authRouter.post('/registration-confirmation', input_validation_1.confirmationCodeValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = auth_service_1.authService.confirmEmail(req.body.code);
     if (!result) {
         return res.send(400);
     }
-    res.send(204);
+    res.status(204).send();
 }));
 exports.authRouter.post('/registration-email-resending', input_validation_1.emailValidationForResending, input_validation_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield users_service_1.usersService.findUserByEmail(req.body.email);
@@ -63,5 +63,5 @@ exports.authRouter.post('/registration-email-resending', input_validation_1.emai
     if (!result) {
         return res.send(400);
     }
-    res.send(204);
+    res.status(204).send();
 }));

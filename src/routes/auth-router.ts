@@ -59,7 +59,7 @@ authRouter.post('/registration',
         res.send({"errorsMessages": 'can not send email. try later'})
         return
     }
-    res.send(204)
+    res.status(204).send()
 
 })
 
@@ -71,7 +71,7 @@ authRouter.post('/registration-confirmation',
     if (!result) {
         return res.send(400)
     }
-    res.send(204)
+    res.status(204).send()
 
 })
 
@@ -94,6 +94,6 @@ authRouter.post('/registration-email-resending',
     if (!result) {
         return res.send(400)
     }
-    res.send(204)
+    res.status(204).send()
 
     })
