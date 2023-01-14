@@ -59,7 +59,8 @@ authRouter.post('/registration',
         res.send({"errorsMessages": 'can not send email. try later'})
         return
     }
-    res.status(204).send('you successfully registered')
+    console.log(result)
+    res.sendStatus(204).end()
 
 })
 
