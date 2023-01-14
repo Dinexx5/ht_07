@@ -66,6 +66,7 @@ exports.emailValidation = (0, express_validator_1.body)('email').trim().isEmail(
     if (isUser) {
         throw new Error('user with provided email already exists');
     }
+    return true;
 }));
 exports.emailValidationForResending = (0, express_validator_1.body)('email').trim().isEmail().withMessage('Not an email')
     .custom((email) => __awaiter(void 0, void 0, void 0, function* () {
@@ -76,6 +77,7 @@ exports.emailValidationForResending = (0, express_validator_1.body)('email').tri
     if (isUser.emailConfirmation.isConfirmed) {
         throw new Error('email is already confirmed');
     }
+    return true;
 }));
 //auth validation
 exports.loginOrEmailValidation = (0, express_validator_1.body)('loginOrEmail').trim().not().isEmpty().withMessage('Not a string');
