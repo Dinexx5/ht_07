@@ -60,7 +60,7 @@ authRouter.post('/registration',
         return
     }
     console.log(result)
-    res.sendStatus(204).end()
+    res.send(204)
 
 })
 

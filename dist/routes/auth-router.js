@@ -43,7 +43,7 @@ exports.authRouter.post('/registration', input_validation_1.loginValidation, inp
         return;
     }
     console.log(result);
-    res.sendStatus(204).end();
+    res.send(204);
 }));
 exports.authRouter.post('/registration-confirmation', input_validation_1.confirmationCodeValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = auth_service_1.authService.confirmEmail(req.body.code);
