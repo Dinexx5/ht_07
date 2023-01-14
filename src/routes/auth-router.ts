@@ -59,7 +59,7 @@ authRouter.post('/registration',
         res.send({"errorsMessages": 'can not send email. try later'})
         return
     }
-    res.status(204).send()
+    res.status(204).send('you successfully registered')
 
 })
 
@@ -71,7 +71,7 @@ authRouter.post('/registration-confirmation',
     if (!result) {
         return res.send(400)
     }
-    res.status(204).send()
+    res.status(204).send('your email is now confirmed')
 
 })
 
