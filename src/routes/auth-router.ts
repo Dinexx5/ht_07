@@ -54,9 +54,9 @@ authRouter.post('/registration',
     inputValidationMiddleware,
     async(req: RequestWithBody<createUserInputModel>, res: Response) => {
 
-    const result = await authService.createUser(req.body)
-    if (!result) {
-        res.status(201).send({"errorsMessages": 'can not send email. try later'})
+    const createdAccount = await authService.createUser(req.body)
+    if (!createdAccount) {
+        res.send({"errorsMessages": 'can not send email. try later'})
         return
     }
     res.send(204)
@@ -67,7 +67,7 @@ authRouter.post('/registration-confirmation',
     confirmationCodeValidation,
     async(req: RequestWithBody<registrationConfirmationInput>, res: Response) => {
 
-    const result = authService.confirmEmail(req.body.code)
+    const result = await authService.confirmEmail(req.body.code)
     if (!result) {
         return res.send(400)
     }

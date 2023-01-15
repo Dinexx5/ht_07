@@ -41,9 +41,10 @@ exports.authService = {
                     isConfirmed: false
                 }
             };
-            const result = yield users_repository_db_1.usersRepository.createUser(newDbAccount);
+            const createdAccount = yield users_repository_db_1.usersRepository.createUser(newDbAccount);
             try {
                 yield email_service_1.emailService.sendEmailForConfirmation(email, newDbAccount.emailConfirmation.confirmationCode);
+                return createdAccount;
             }
             catch (error) {
                 console.error(error);
@@ -51,7 +52,6 @@ exports.authService = {
                 yield users_repository_db_1.usersRepository.deleteUserById(id);
                 return null;
             }
-            return result;
         });
     },
     confirmEmail(code) {

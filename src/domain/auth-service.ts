@@ -1,5 +1,5 @@
 import {usersRepository} from "../repositories/users-repository-db";
-import {authInputModel, createUserInputModel, userAccountDbType, userDbType} from "../models/models";
+import {authInputModel, createUserInputModel, userAccountDbType} from "../models/models";
 import bcrypt from 'bcrypt'
 import {ObjectId} from "mongodb";
 import {v4 as uuidv4} from 'uuid'
@@ -28,16 +28,16 @@ export const authService = {
                 isConfirmed: false
             }
         }
-        const result = await usersRepository.createUser(newDbAccount)
+        const createdAccount = await usersRepository.createUser(newDbAccount)
         try {
             await emailService.sendEmailForConfirmation(email, newDbAccount.emailConfirmation.confirmationCode)
+            return createdAccount
         } catch(error) {
             console.error(error)
             const id = newDbAccount._id.toString()
             await usersRepository.deleteUserById(id)
             return null
         }
-        return result
     },
 
     async confirmEmail(code: string): Promise<boolean> {
