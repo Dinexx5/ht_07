@@ -1,7 +1,13 @@
 import {Request, Response, Router} from "express"
 import {usersService} from "../domain/users-service";
 import {RequestWithBody} from "../repositories/types";
-import {authInputModel, createUserInputModel, registrationConfirmationInput, resendEmailModel} from "../models/models";
+import {
+    authInputModel,
+    createUserInputModel,
+    registrationConfirmationInput,
+    resendEmailModel,
+    userAccountDbType
+} from "../models/models";
 import {
     confirmationCodeValidation,
     emailValidation, emailValidationForResending,
@@ -12,6 +18,8 @@ import {
 import {jwtService} from "../application/jwt-service";
 import {bearerAuthMiddleware} from "../middlewares/auth-middlewares";
 import {authService} from "../domain/auth-service";
+import {v4 as uuidv4} from "uuid";
+import {usersRepository} from "../repositories/users-repository-db";
 
 
 export const authRouter = Router({})
@@ -66,13 +74,14 @@ authRouter.post('/registration',
 
 authRouter.post('/registration-confirmation',
     confirmationCodeValidation,
+    inputValidationMiddleware,
     async(req: RequestWithBody<registrationConfirmationInput>, res: Response) => {
 
-    const result = await authService.confirmEmail(req.body.code)
-    if (!result) {
+    const isConfirmed = await authService.confirmEmail(req.body.code)
+    if (!isConfirmed) {
         return res.send(400)
     }
-    res.status(204).send('your email is now confirmed')
+    res.send(204)
 
 })
 
@@ -81,8 +90,9 @@ authRouter.post('/registration-email-resending',
     emailValidationForResending,
     inputValidationMiddleware,
     async(req: RequestWithBody<resendEmailModel>, res: Response) => {
-    const user = await usersService.findUserByEmail(req.body.email)
-    const confirmationCode = user!.emailConfirmation.confirmationCode
+    const user: userAccountDbType | null = await usersRepository.findByLoginOrEmail(req.body.email)
+    const confirmationCode = uuidv4()
+    await usersRepository.updateCode(user!._id, confirmationCode)
     const isEmailResend = await authService.resendEmail(req.body.email, confirmationCode)
 
     if (!isEmailResend) {
@@ -90,11 +100,11 @@ authRouter.post('/registration-email-resending',
         return
     }
 
-    const result = authService.confirmEmail(confirmationCode)
+    const isConfirmed = authService.confirmEmail(confirmationCode)
 
-    if (!result) {
+    if (!isConfirmed) {
         return res.send(400)
     }
-    res.status(204).send()
+    res.send(204)
 
     })

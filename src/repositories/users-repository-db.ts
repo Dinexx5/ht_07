@@ -39,11 +39,7 @@ export const usersRepository = {
     },
 
     async findUserByEmail(email: string): Promise<userAccountDbType | null> {
-        let user = await userAccountsCollection.findOne({'accountData.email': email})
-        if (!user) {
-            return null
-        }
-        return user
+        return await userAccountsCollection.findOne({'accountData.email': email})
     },
 
 
@@ -57,6 +53,10 @@ export const usersRepository = {
 
     async updateConfirmation (_id: Object): Promise<boolean> {
         let result = await userAccountsCollection.updateOne({_id}, {$set: {'emailConfirmation.isConfirmed': true} })
+        return result.modifiedCount === 1
+    },
+    async updateCode (_id: Object, code: string): Promise<boolean> {
+        let result = await userAccountsCollection.updateOne({_id}, {$set: {'emailConfirmation.confirmationCode': code} })
         return result.modifiedCount === 1
     }
 

@@ -43,5 +43,6 @@ export const usersService = {
     },
     async findUserByEmail(email: string): Promise<userAccountDbType | null> {
         return await usersRepository.findUserByEmail(email)
-    }
+    },
+
 }

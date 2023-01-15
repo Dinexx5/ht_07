@@ -52,11 +52,7 @@ exports.usersRepository = {
     },
     findUserByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            let user = yield db_1.userAccountsCollection.findOne({ 'accountData.email': email });
-            if (!user) {
-                return null;
-            }
-            return user;
+            return yield db_1.userAccountsCollection.findOne({ 'accountData.email': email });
         });
     },
     findUserByConfirmationCode(code) {
@@ -71,6 +67,12 @@ exports.usersRepository = {
     updateConfirmation(_id) {
         return __awaiter(this, void 0, void 0, function* () {
             let result = yield db_1.userAccountsCollection.updateOne({ _id }, { $set: { 'emailConfirmation.isConfirmed': true } });
+            return result.modifiedCount === 1;
+        });
+    },
+    updateCode(_id, code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = yield db_1.userAccountsCollection.updateOne({ _id }, { $set: { 'emailConfirmation.confirmationCode': code } });
             return result.modifiedCount === 1;
         });
     }

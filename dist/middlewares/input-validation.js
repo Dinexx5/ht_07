@@ -14,7 +14,6 @@ const express_validator_1 = require("express-validator");
 const blogs_query_repository_1 = require("../repositories/blogs-query-repository");
 const mongodb_1 = require("mongodb");
 const users_repository_db_1 = require("../repositories/users-repository-db");
-const users_service_1 = require("../domain/users-service");
 const myValidationResult = express_validator_1.validationResult.withDefaults({
     formatter: error => {
         return {
@@ -58,11 +57,18 @@ exports.blogIdlValidation = (0, express_validator_1.body)('blogId').trim().not()
     return true;
 }));
 //users validation
-exports.loginValidation = (0, express_validator_1.body)('login').trim().isLength({ min: 3, max: 10 }).withMessage('Incorrect length').matches(/^[a-zA-Z0-9_-]*$/).withMessage('Incorrect login pattern');
+exports.loginValidation = (0, express_validator_1.body)('login').trim().isLength({ min: 3, max: 10 }).withMessage('Incorrect length').matches(/^[a-zA-Z0-9_-]*$/).withMessage('Incorrect login pattern')
+    .custom((login) => __awaiter(void 0, void 0, void 0, function* () {
+    const isUser = yield users_repository_db_1.usersRepository.findByLoginOrEmail(login);
+    if (isUser) {
+        throw new Error('user with provided login already exists');
+    }
+    return true;
+}));
 exports.passwordValidation = (0, express_validator_1.body)('password').trim().isLength({ min: 6, max: 20 }).withMessage('Incorrect length').not().isEmpty().withMessage('Not a string');
 exports.emailValidation = (0, express_validator_1.body)('email').trim().isEmail().withMessage('Not an email')
     .custom((email) => __awaiter(void 0, void 0, void 0, function* () {
-    const isUser = yield users_service_1.usersService.findUserByEmail(email);
+    const isUser = yield users_repository_db_1.usersRepository.findByLoginOrEmail(email);
     if (isUser) {
         throw new Error('user with provided email already exists');
     }
@@ -70,7 +76,7 @@ exports.emailValidation = (0, express_validator_1.body)('email').trim().isEmail(
 }));
 exports.emailValidationForResending = (0, express_validator_1.body)('email').trim().isEmail().withMessage('Not an email')
     .custom((email) => __awaiter(void 0, void 0, void 0, function* () {
-    const isUser = yield users_service_1.usersService.findUserByEmail(email);
+    const isUser = yield users_repository_db_1.usersRepository.findByLoginOrEmail(email);
     if (!isUser) {
         throw new Error('user with provided email does not exist');
     }

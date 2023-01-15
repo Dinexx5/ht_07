@@ -59,5 +59,5 @@ exports.usersService = {
         return __awaiter(this, void 0, void 0, function* () {
             return yield users_repository_db_1.usersRepository.findUserByEmail(email);
         });
-    }
+    },
 };

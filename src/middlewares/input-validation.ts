@@ -57,11 +57,18 @@ export const blogIdlValidation = body('blogId').trim().not().isEmpty().withMessa
 
 //users validation
 export const loginValidation = body('login').trim().isLength({min: 3, max: 10}).withMessage('Incorrect length').matches(/^[a-zA-Z0-9_-]*$/).withMessage('Incorrect login pattern')
+    .custom(async (login) => {
+        const isUser: userAccountDbType | null = await usersRepository.findByLoginOrEmail(login)
+        if (isUser) {
+            throw new Error('user with provided login already exists');
+        }
+        return true
+    })
 export const passwordValidation = body('password').trim().isLength({min: 6, max: 20}).withMessage('Incorrect length').not().isEmpty().withMessage('Not a string')
 
 export const emailValidation = body('email').trim().isEmail().withMessage('Not an email')
     .custom(async (email) => {
-        const isUser: userAccountDbType | null = await usersService.findUserByEmail(email)
+        const isUser: userAccountDbType | null = await usersRepository.findByLoginOrEmail(email)
         if (isUser) {
             throw new Error('user with provided email already exists');
         }
@@ -69,7 +76,7 @@ export const emailValidation = body('email').trim().isEmail().withMessage('Not a
     })
 export const emailValidationForResending = body('email').trim().isEmail().withMessage('Not an email')
     .custom(async (email) => {
-        const isUser: userAccountDbType | null = await usersService.findUserByEmail(email)
+        const isUser: userAccountDbType | null = await usersRepository.findByLoginOrEmail(email)
         if (!isUser) {
             throw new Error('user with provided email does not exist');
         }
