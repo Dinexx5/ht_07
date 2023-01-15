@@ -100,18 +100,21 @@ export type userDbType = {
 }
 export type userAccountDbType = {
     _id: Object
-    accountData: {
-        login: string
-        email: string
-        createdAt: string
-        passwordHash: string
-    }
-    emailConfirmation: {
-        confirmationCode: any
-        expirationDate: any
-        isConfirmed: boolean
-    }
+    accountData: accountData
+    emailConfirmation: emailConfirmation
 }
+type accountData = {
+    login: string
+    email: string
+    createdAt: string
+    passwordHash: string
+}
+type emailConfirmation = {
+    confirmationCode: string
+    expirationDate: any
+    isConfirmed: boolean
+}
+
 export type resendEmailModel = {
     email: string
 }

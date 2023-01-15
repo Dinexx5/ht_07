@@ -31,13 +31,13 @@ export const authService = {
         const createdAccount = await usersRepository.createUser(newDbAccount)
         try {
             await emailService.sendEmailForConfirmation(email, newDbAccount.emailConfirmation.confirmationCode)
-            return createdAccount
         } catch(error) {
             console.error(error)
             const id = newDbAccount._id.toString()
             await usersRepository.deleteUserById(id)
             return null
         }
+        return createdAccount
     },
 
     async confirmEmail(code: string): Promise<boolean> {
