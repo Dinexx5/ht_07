@@ -99,12 +99,6 @@ authRouter.post('/registration-email-resending',
         res.send({"errorsMessages": 'can not send email. try later'})
         return
     }
-
-    const isConfirmed = authService.confirmEmail(confirmationCode)
-
-    if (!isConfirmed) {
-        return res.send(400)
-    }
     res.send(204)
 
     })

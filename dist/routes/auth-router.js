@@ -61,9 +61,5 @@ exports.authRouter.post('/registration-email-resending', input_validation_1.emai
         res.send({ "errorsMessages": 'can not send email. try later' });
         return;
     }
-    const isConfirmed = auth_service_1.authService.confirmEmail(confirmationCode);
-    if (!isConfirmed) {
-        return res.send(400);
-    }
     res.send(204);
 }));
