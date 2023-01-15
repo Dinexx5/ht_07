@@ -9,14 +9,14 @@ export const emailAdapter = {
             port: 587,
             secure: false,
             auth: {
-                user: 'd.diubajlo.test@mail.ru',
-                pass: '1peqS8TSzP0ZmVCKVLTV'
+                user: 'd.diubajlo@mail.ru',
+                pass: 'rz0EmNbci95v8bACZ0H5'
             },
         })
 
 
         let info = await transporter.sendMail({
-            from: 'd.diubajlo.test@mail.ru',
+            from: 'd.diubajlo@mail.ru',
             to: email,
             subject: "Succefful registration",
             html: "<h1>Thank for your registration</h1>\n" +

@@ -38,11 +38,11 @@ exports.authRouter.get('/me', auth_middlewares_1.bearerAuthMiddleware, (req, res
 //emails
 exports.authRouter.post('/registration', input_validation_1.loginValidation, input_validation_1.emailValidation, input_validation_1.passwordValidation, input_validation_1.inputValidationMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const createdAccount = yield auth_service_1.authService.createUser(req.body);
-    if (createdAccount) {
-        return res.send(204);
+    if (!createdAccount) {
+        res.send({ "errorsMessages": 'can not send email. try later' });
+        return;
     }
-    res.send({ "errorsMessages": 'can not send email. try later' });
-    return;
+    res.send(204);
 }));
 exports.authRouter.post('/registration-confirmation', input_validation_1.confirmationCodeValidation, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_service_1.authService.confirmEmail(req.body.code);

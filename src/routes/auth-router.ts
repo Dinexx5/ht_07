@@ -55,11 +55,11 @@ authRouter.post('/registration',
     async(req: RequestWithBody<createUserInputModel>, res: Response) => {
 
     const createdAccount = await authService.createUser(req.body)
-    if (createdAccount) {
-        return res.send(204)
+    if (!createdAccount) {
+        res.send({"errorsMessages": 'can not send email. try later'})
+        return
     }
-    res.send({"errorsMessages": 'can not send email. try later'})
-    return
+    res.send(204)
 
 
 })
