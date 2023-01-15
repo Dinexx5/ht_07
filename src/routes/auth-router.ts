@@ -1,5 +1,4 @@
 import {Request, Response, Router} from "express"
-import {usersService} from "../domain/users-service";
 import {RequestWithBody} from "../repositories/types";
 import {
     authInputModel,

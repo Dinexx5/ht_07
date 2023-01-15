@@ -10,7 +10,7 @@ export const emailAdapter = {
             secure: false,
             auth: {
                 user: 'd.diubajlo@mail.ru',
-                pass: 'rz0EmNbci95v8bACZ0H5'
+                pass: process.env.MAIL_PASS
             },
         })
 
