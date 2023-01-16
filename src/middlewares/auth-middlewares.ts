@@ -1,6 +1,5 @@
 import {NextFunction, Request, Response} from "express";
 import {jwtService} from "../application/jwt-service";
-import {usersService} from "../domain/users-service";
 import {authService} from "../domain/auth-service";
 
 export const basicAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {

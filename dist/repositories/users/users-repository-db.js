@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersRepository = void 0;
-const db_1 = require("./db");
+const db_1 = require("../db");
 const mongodb_1 = require("mongodb");
 exports.usersRepository = {
     //for superAdmin:

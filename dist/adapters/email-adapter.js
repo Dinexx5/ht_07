@@ -26,7 +26,7 @@ exports.emailAdapter = {
                     pass: process.env.MAIL_PASS
                 },
             });
-            let info = yield transporter.sendMail({
+            return yield transporter.sendMail({
                 from: 'd.diubajlo@mail.ru',
                 to: email,
                 subject: "Successful registration",
@@ -35,7 +35,6 @@ exports.emailAdapter = {
                     `          <a href='https://somesite.com/confirm-email?code=${code}'>complete registration</a>\n` +
                     "      </p>",
             });
-            return info;
         });
     }
 };

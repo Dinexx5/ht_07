@@ -15,7 +15,7 @@ export const emailAdapter = {
         })
 
 
-        let info = await transporter.sendMail({
+        return await transporter.sendMail({
             from: 'd.diubajlo@mail.ru',
             to: email,
             subject: "Successful registration",
@@ -24,7 +24,7 @@ export const emailAdapter = {
                 `          <a href='https://somesite.com/confirm-email?code=${code}'>complete registration</a>\n` +
                 "      </p>",
         })
-        return info
+
 
     }
 }
