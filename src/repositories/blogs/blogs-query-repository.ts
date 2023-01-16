@@ -1,10 +1,10 @@
-import {blogsCollection} from "./db";
+import {blogsCollection} from "../db";
 import {ObjectId} from "mongodb";
 import {
     blogDbModel,
     blogViewModel,
     paginationQuerys, paginatedViewModel
-} from "../models/models";
+} from "../../models/models";
 
 function mapFoundBlogToBlogViewModel (blog: blogDbModel): blogViewModel {
     return  {

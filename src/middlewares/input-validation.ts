@@ -1,9 +1,9 @@
 import {NextFunction, Request, Response} from "express";
 import {body, validationResult} from "express-validator";
-import {blogsQueryRepository} from "../repositories/blogs-query-repository";
+import {blogsQueryRepository} from "../repositories/blogs/blogs-query-repository";
 import {blogViewModel, userAccountDbType} from "../models/models";
 import {ObjectId} from "mongodb";
-import {usersRepository} from "../repositories/users-repository-db";
+import {usersRepository} from "../repositories/users/users-repository-db";
 import {usersService} from "../domain/users-service";
 
 

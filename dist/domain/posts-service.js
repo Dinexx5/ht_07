@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.postsService = void 0;
-const posts_repository_db_1 = require("../repositories/posts-repository-db");
+const posts_repository_db_1 = require("../repositories/posts/posts-repository-db");
 exports.postsService = {
     createPost(postBody) {
         return __awaiter(this, void 0, void 0, function* () {

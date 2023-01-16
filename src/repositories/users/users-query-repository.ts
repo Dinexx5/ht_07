@@ -1,9 +1,9 @@
-import {userAccountsCollection} from "./db";
+import {userAccountsCollection} from "../db";
 import {
     userViewModel,
     paginationQuerys,
     paginatedViewModel, userAccountDbType
-} from "../models/models";
+} from "../../models/models";
 
 function mapDbUserToUserViewModel (user: userAccountDbType): userViewModel {
     return  {

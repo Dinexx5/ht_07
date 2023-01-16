@@ -1,6 +1,6 @@
-import {blogsCollection} from "./db";
+import {blogsCollection} from "../db";
 import {ObjectId} from "mongodb";
-import {blogDbModel, blogViewModel, createBlogInputModel, updateBlogInputModel} from "../models/models";
+import {blogDbModel, blogViewModel, createBlogInputModel, updateBlogInputModel} from "../../models/models";
 
 
 export const blogsRepository = {

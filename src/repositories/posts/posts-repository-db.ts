@@ -1,11 +1,11 @@
-import {postsCollection} from "./db";
+import {postsCollection} from "../db";
 import {ObjectId} from "mongodb";
-import {blogsQueryRepository} from "./blogs-query-repository";
+import {blogsQueryRepository} from "../blogs/blogs-query-repository";
 import {
     createPostInputModelWithBlogId, postDbModel,
     postViewModel,
     updatePostInputModel
-} from "../models/models";
+} from "../../models/models";
 
 
 export const postsRepository = {

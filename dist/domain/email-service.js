@@ -14,8 +14,6 @@ const email_adapter_1 = require("../adapters/email-adapter");
 exports.emailService = {
     sendEmailForConfirmation(email, code) {
         return __awaiter(this, void 0, void 0, function* () {
-            // post to db
-            // read user from db
             return yield email_adapter_1.emailAdapter.sendEmailForConfirmation(email, code);
         });
     }

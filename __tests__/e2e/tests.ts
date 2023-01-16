@@ -474,8 +474,48 @@ describe('/blogs', () => {
             .post('/auth/registration')
             .send ({
                 login: "valid",
-                password: 'valid',
+                password: 'validvalid',
                 email: 'not valid'
+            })
+            .expect (400)
+    })
+    it ('should not create account with incorrect password', async () => {
+        await request(app)
+            .post('/auth/registration')
+            .send ({
+                login: "valid",
+                password: 'va',
+                email: 'dimka256@gmail.com'
+            })
+            .expect (400)
+    })
+    it ('should not create account with incorrect login', async () => {
+        await request(app)
+            .post('/auth/registration')
+            .send ({
+                login: "veryveryveryverylonglogin",
+                password: 'validvalid',
+                email: 'dimka256@gmail.com'
+            })
+            .expect (400)
+    })
+    it ('should create account with correct input', async () => {
+        await request(app)
+            .post('/auth/registration')
+            .send ({
+                login: "dimkadub",
+                password: 'validvalid',
+                email: 'd.diubajlo@mail.ru'
+            })
+            .expect (204)
+    })
+    it ('should not create account with the same email', async () => {
+        await request(app)
+            .post('/auth/registration')
+            .send ({
+                login: "dimkadub2",
+                password: 'validvalid2',
+                email: 'd.diubajlo@mail.ru'
             })
             .expect (400)
     })

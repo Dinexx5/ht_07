@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersService = void 0;
-const users_repository_db_1 = require("../repositories/users-repository-db");
+const users_repository_db_1 = require("../repositories/users/users-repository-db");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const mongodb_1 = require("mongodb");
 const uuid_1 = require("uuid");

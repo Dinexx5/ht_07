@@ -1,5 +1,5 @@
-import {userAccountsCollection} from "./db";
-import {userAccountDbType, userViewModel} from "../models/models";
+import {userAccountsCollection} from "../db";
+import {userAccountDbType, userViewModel} from "../../models/models";
 import {ObjectId} from "mongodb";
 
 

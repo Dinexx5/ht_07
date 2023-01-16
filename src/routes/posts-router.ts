@@ -10,9 +10,9 @@ import {postsService} from "../domain/posts-service";
 import {
     RequestWithBody, RequestWithParams,
     RequestWithParamsAndBody, RequestWithParamsAndQuery, RequestWithQuery
-} from "../repositories/types";
+} from "../models/types";
 
-import {postsQueryRepository} from "../repositories/posts-query-repository";
+import {postsQueryRepository} from "../repositories/posts/posts-query-repository";
 
 import {
     commentViewModel,

@@ -11,9 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.passwordAuthValidation = exports.loginOrEmailValidation = exports.confirmationCodeValidation = exports.emailValidationForResending = exports.emailValidation = exports.passwordValidation = exports.loginValidation = exports.commentContentValidation = exports.blogIdlValidation = exports.postContentValidation = exports.shortDescriptionValidation = exports.titleValidation = exports.websiteUrlValidation = exports.descriptionValidation = exports.nameValidation = exports.objectIdIsValidMiddleware = exports.inputValidationMiddleware = void 0;
 const express_validator_1 = require("express-validator");
-const blogs_query_repository_1 = require("../repositories/blogs-query-repository");
+const blogs_query_repository_1 = require("../repositories/blogs/blogs-query-repository");
 const mongodb_1 = require("mongodb");
-const users_repository_db_1 = require("../repositories/users-repository-db");
+const users_repository_db_1 = require("../repositories/users/users-repository-db");
 const myValidationResult = express_validator_1.validationResult.withDefaults({
     formatter: error => {
         return {

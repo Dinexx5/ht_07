@@ -4,7 +4,7 @@ import {commentsQueryRepository} from "../repositories/comments/comments-query-r
 import {
     RequestWithParams,
     RequestWithParamsAndBody,
-} from "../repositories/types";
+} from "../models/types";
 import {
     commentViewModel, createCommentInputModel,
     paramsIdModel,

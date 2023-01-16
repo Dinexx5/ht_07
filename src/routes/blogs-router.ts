@@ -8,11 +8,11 @@ import {postContentValidation, descriptionValidation,
 import {
     RequestWithQuery, RequestWithParams, RequestWithBody,
     RequestWithParamsAndBody, RequestWithParamsAndQuery
-} from "../repositories/types";
+} from "../models/types";
 
-import {blogsQueryRepository} from "../repositories/blogs-query-repository";
+import {blogsQueryRepository} from "../repositories/blogs/blogs-query-repository";
 import {postsService} from "../domain/posts-service";
-import {postsQueryRepository} from "../repositories/posts-query-repository";
+import {postsQueryRepository} from "../repositories/posts/posts-query-repository";
 import {
     blogViewModel,
     createBlogInputModel,

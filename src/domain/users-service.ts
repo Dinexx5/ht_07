@@ -1,4 +1,4 @@
-import {usersRepository} from "../repositories/users-repository-db";
+import {usersRepository} from "../repositories/users/users-repository-db";
 import {createUserInputModel, userAccountDbType, userViewModel} from "../models/models";
 import bcrypt from 'bcrypt'
 import {ObjectId} from "mongodb";

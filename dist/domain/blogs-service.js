@@ -10,21 +10,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsService = void 0;
-const blogs_repository_db_1 = require("../repositories/blogs-repository-db");
+const blogs_db_repository_1 = require("../repositories/blogs/blogs-db-repository");
 exports.blogsService = {
     createBlog(blogBody) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield blogs_repository_db_1.blogsRepository.createBlog(blogBody);
+            return yield blogs_db_repository_1.blogsRepository.createBlog(blogBody);
         });
     },
     deleteBlogById(blogId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield blogs_repository_db_1.blogsRepository.deleteBlogById(blogId);
+            return yield blogs_db_repository_1.blogsRepository.deleteBlogById(blogId);
         });
     },
     UpdateBlogById(blogId, blogBody) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield blogs_repository_db_1.blogsRepository.UpdateBlogById(blogId, blogBody);
+            return yield blogs_db_repository_1.blogsRepository.UpdateBlogById(blogId, blogBody);
         });
     }
 };

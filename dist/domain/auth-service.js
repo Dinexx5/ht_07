@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authService = void 0;
-const users_repository_db_1 = require("../repositories/users-repository-db");
+const users_repository_db_1 = require("../repositories/users/users-repository-db");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const mongodb_1 = require("mongodb");
 const uuid_1 = require("uuid");
@@ -61,10 +61,13 @@ exports.authService = {
             return yield users_repository_db_1.usersRepository.findUserById(userId);
         });
     },
-    resendEmail(email, code) {
+    resendEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
+            const user = yield users_repository_db_1.usersRepository.findByLoginOrEmail(email);
+            const confirmationCode = (0, uuid_1.v4)();
+            yield users_repository_db_1.usersRepository.updateCode(user._id, confirmationCode);
             try {
-                yield email_service_1.emailService.sendEmailForConfirmation(email, code);
+                yield email_service_1.emailService.sendEmailForConfirmation(email, confirmationCode);
             }
             catch (error) {
                 console.error(error);

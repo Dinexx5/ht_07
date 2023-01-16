@@ -1,4 +1,4 @@
-import {postsRepository} from "../repositories/posts-repository-db";
+import {postsRepository} from "../repositories/posts/posts-repository-db";
 import {
     createPostInputModel, createPostInputModelWithBlogId,
     postViewModel,

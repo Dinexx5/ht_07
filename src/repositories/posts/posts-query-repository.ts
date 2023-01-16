@@ -1,10 +1,10 @@
-import {postsCollection} from "./db";
+import {postsCollection} from "../db";
 import {ObjectId} from "mongodb";
 import {
     paginationQuerys,
     postDbModel,
     postViewModel, paginatedViewModel,
-} from "../models/models";
+} from "../../models/models";
 
 function postsMapperToPostType (post: postDbModel): postViewModel {
     return  {

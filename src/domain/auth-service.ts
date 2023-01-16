@@ -1,4 +1,4 @@
-import {usersRepository} from "../repositories/users-repository-db";
+import {usersRepository} from "../repositories/users/users-repository-db";
 import {authInputModel, createUserInputModel, userAccountDbType} from "../models/models";
 import bcrypt from 'bcrypt'
 import {ObjectId} from "mongodb";
@@ -49,9 +49,12 @@ export const authService = {
 
     },
 
-    async resendEmail(email:string, code: string): Promise<boolean> {
+    async resendEmail(email:string): Promise<boolean> {
+        const user: userAccountDbType | null = await usersRepository.findByLoginOrEmail(email)
+        const confirmationCode = uuidv4()
+        await usersRepository.updateCode(user!._id, confirmationCode)
         try {
-            await emailService.sendEmailForConfirmation(email, code)
+            await emailService.sendEmailForConfirmation(email, confirmationCode)
         } catch(error) {
             console.error(error)
             return false

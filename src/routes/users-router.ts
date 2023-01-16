@@ -4,7 +4,7 @@ import {emailValidation, inputValidationMiddleware,
         loginValidation, objectIdIsValidMiddleware, passwordValidation,
 } from "../middlewares/input-validation";
 
-import {RequestWithQuery, RequestWithParams, RequestWithBody} from "../repositories/types";
+import {RequestWithQuery, RequestWithParams, RequestWithBody} from "../models/types";
 
 import {
     createUserInputModel, paginationQuerys,
@@ -14,7 +14,7 @@ import {
 } from "../models/models";
 
 import {usersService} from "../domain/users-service";
-import {usersQueryRepository} from "../repositories/users-query-repository";
+import {usersQueryRepository} from "../repositories/users/users-query-repository";
 import {basicAuthMiddleware} from "../middlewares/auth-middlewares";
 
 

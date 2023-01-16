@@ -1,5 +1,5 @@
 
-import {blogsRepository} from "../repositories/blogs-repository-db";
+import {blogsRepository} from "../repositories/blogs/blogs-db-repository";
 import {blogViewModel, createBlogInputModel, updateBlogInputModel} from "../models/models";
 
 
