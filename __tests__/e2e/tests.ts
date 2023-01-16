@@ -16,7 +16,6 @@ describe('/blogs', () => {
     }
 
 
-
     it('should return 200 and empty array of blogs', async () => {
         await request(app)
             .get('/blogs')
@@ -25,7 +24,7 @@ describe('/blogs', () => {
 
     it('should return 404 for not existing blog', async () => {
         await request(app)
-            .get('/blogs/100')
+            .get('/blogs/507f1f77bcf86cd799439011')
             .expect (404)
     })
 
@@ -175,7 +174,7 @@ describe('/blogs', () => {
 
     it('should not update blog that do not exist', async () => {
         await request(app)
-            .put('/blogs/10000')
+            .put('/blogs/507f1f77bcf86cd799439011')
             .auth('admin', 'qwerty')
             .send({
                 name: 'orhere',
@@ -245,7 +244,7 @@ describe('/blogs', () => {
 
     it('should return 404 for not existing post', async () => {
         await request(app)
-            .get('/posts/100')
+            .get('/posts/507f1f77bcf86cd799439011')
             .expect (404)
     })
 
@@ -402,7 +401,7 @@ describe('/blogs', () => {
 
     it('should not update post that do not exist', async () => {
         await request(app)
-            .put('/posts/10000')
+            .put('/posts/507f1f77bcf86cd799439011')
             .auth('admin', 'qwerty')
             .send({
                 title: 'title2',
@@ -463,6 +462,22 @@ describe('/blogs', () => {
                 totalCount: 1,
                 items: [createdPost2]
             })
+    })
+    it ('should remove everything', async () => {
+        await request(app).delete('/testing/all-data')
+        await request(app)
+            .get('/blogs')
+            .expect (200, paginatedEmpty)
+    })
+    it ('should not create account with incorrect email', async () => {
+        await request(app)
+            .post('/auth/registration')
+            .send ({
+                login: "valid",
+                password: 'valid',
+                email: 'not valid'
+            })
+            .expect (400)
     })
 
 

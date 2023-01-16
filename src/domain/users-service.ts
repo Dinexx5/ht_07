@@ -1,5 +1,5 @@
 import {usersRepository} from "../repositories/users-repository-db";
-import {authInputModel, createUserInputModel, userAccountDbType, userDbType, userViewModel} from "../models/models";
+import {createUserInputModel, userAccountDbType, userViewModel} from "../models/models";
 import bcrypt from 'bcrypt'
 import {ObjectId} from "mongodb";
 import {v4 as uuidv4} from "uuid";
@@ -36,13 +36,7 @@ export const usersService = {
 
     },
 
-    // req.user in bearerAuthMiddleware
-    async findUserById(userId: Object): Promise<userAccountDbType> {
-        return await usersRepository.findUserById(userId)
 
-    },
-    async findUserByEmail(email: string): Promise<userAccountDbType | null> {
-        return await usersRepository.findUserByEmail(email)
-    },
+
 
 }

@@ -8,6 +8,8 @@ import {emailService} from "./email-service";
 
 export const authService = {
 
+    //registration
+
     async createUser(body: createUserInputModel): Promise<userAccountDbType | null> {
         const {login , email, password} = body
         const passwordSalt = await bcrypt.genSalt(10)
@@ -40,11 +42,31 @@ export const authService = {
         return createdAccount
     },
 
+    // req.user in bearerAuthMiddleware
+
+    async findUserById(userId: Object): Promise<userAccountDbType> {
+        return await usersRepository.findUserById(userId)
+
+    },
+
+    async resendEmail(email:string, code: string): Promise<boolean> {
+        try {
+            await emailService.sendEmailForConfirmation(email, code)
+        } catch(error) {
+            console.error(error)
+            return false
+        }
+        return true
+    },
+
+
     async confirmEmail(code: string): Promise<boolean> {
         let user = await usersRepository.findUserByConfirmationCode(code)
         return await usersRepository.updateConfirmation(user!._id)
 
     },
+
+    //login
 
     async checkCredentials (body: authInputModel): Promise<userAccountDbType | null> {
         const {loginOrEmail, password} = body
@@ -63,15 +85,6 @@ export const authService = {
         return user
 
 
-    },
-    async resendEmail(email:string, code: string): Promise<boolean> {
-        try {
-            await emailService.sendEmailForConfirmation(email, code)
-        } catch(error) {
-            console.error(error)
-            return false
-        }
-        return true
     }
 
 }

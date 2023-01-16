@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response} from "express";
 import {jwtService} from "../application/jwt-service";
 import {usersService} from "../domain/users-service";
+import {authService} from "../domain/auth-service";
 
 export const basicAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const loginPass = req.headers.authorization;
@@ -18,7 +19,7 @@ export const bearerAuthMiddleware = async (req:Request, res:Response, next: Next
     const token = req.headers.authorization.split(' ')[1]
     const userId = await jwtService.getUserIdByToken(token)
     if (userId) {
-        req.user = await usersService.findUserById(userId)
+        req.user = await authService.findUserById(userId)
         next ()
         return
     }

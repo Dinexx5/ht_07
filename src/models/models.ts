@@ -89,15 +89,6 @@ export type userViewModel = {
     createdAt: string
 }
 
-
-
-export type userDbType = {
-    _id: Object
-    login: string
-    email: string
-    passwordHash: string
-    createdAt: string
-}
 export type userAccountDbType = {
     _id: Object
     accountData: accountData

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.confirmationCodeValidation = exports.commentContentValidation = exports.passwordAuthValidation = exports.loginOrEmailValidation = exports.emailValidationForResending = exports.emailValidation = exports.passwordValidation = exports.loginValidation = exports.blogIdlValidation = exports.postContentValidation = exports.shortDescriptionValidation = exports.titleValidation = exports.websiteUrlValidation = exports.descriptionValidation = exports.nameValidation = exports.objectIdIsValidMiddleware = exports.inputValidationMiddleware = void 0;
+exports.passwordAuthValidation = exports.loginOrEmailValidation = exports.confirmationCodeValidation = exports.emailValidationForResending = exports.emailValidation = exports.passwordValidation = exports.loginValidation = exports.commentContentValidation = exports.blogIdlValidation = exports.postContentValidation = exports.shortDescriptionValidation = exports.titleValidation = exports.websiteUrlValidation = exports.descriptionValidation = exports.nameValidation = exports.objectIdIsValidMiddleware = exports.inputValidationMiddleware = void 0;
 const express_validator_1 = require("express-validator");
 const blogs_query_repository_1 = require("../repositories/blogs-query-repository");
 const mongodb_1 = require("mongodb");
@@ -32,6 +32,7 @@ const inputValidationMiddleware = (req, res, next) => {
     }
 };
 exports.inputValidationMiddleware = inputValidationMiddleware;
+//params
 const objectIdIsValidMiddleware = (req, res, next) => {
     if (mongodb_1.ObjectId.isValid(req.params.id)) {
         next();
@@ -56,7 +57,9 @@ exports.blogIdlValidation = (0, express_validator_1.body)('blogId').trim().not()
     }
     return true;
 }));
-//users validation
+//comments validation
+exports.commentContentValidation = (0, express_validator_1.body)('content').trim().isLength({ min: 20, max: 300 }).withMessage('Incorrect length').not().isEmpty().withMessage('Not a string');
+//registration validation
 exports.loginValidation = (0, express_validator_1.body)('login').trim().isLength({ min: 3, max: 10 }).withMessage('Incorrect length').matches(/^[a-zA-Z0-9_-]*$/).withMessage('Incorrect login pattern')
     .custom((login) => __awaiter(void 0, void 0, void 0, function* () {
     const isUser = yield users_repository_db_1.usersRepository.findByLoginOrEmail(login);
@@ -74,6 +77,7 @@ exports.emailValidation = (0, express_validator_1.body)('email').trim().isEmail(
     }
     return true;
 }));
+//resending email
 exports.emailValidationForResending = (0, express_validator_1.body)('email').trim().isEmail().withMessage('Not an email')
     .custom((email) => __awaiter(void 0, void 0, void 0, function* () {
     const isUser = yield users_repository_db_1.usersRepository.findByLoginOrEmail(email);
@@ -85,11 +89,6 @@ exports.emailValidationForResending = (0, express_validator_1.body)('email').tri
     }
     return true;
 }));
-//auth validation
-exports.loginOrEmailValidation = (0, express_validator_1.body)('loginOrEmail').trim().not().isEmpty().withMessage('Not a string');
-exports.passwordAuthValidation = (0, express_validator_1.body)('password').trim().not().isEmpty().withMessage('Not a string');
-//comments validation
-exports.commentContentValidation = (0, express_validator_1.body)('content').trim().isLength({ min: 20, max: 300 }).withMessage('Incorrect length').not().isEmpty().withMessage('Not a string');
 //confirmation code validation
 exports.confirmationCodeValidation = (0, express_validator_1.body)('code').trim().not().isEmpty().withMessage('Not a string')
     .custom((code) => __awaiter(void 0, void 0, void 0, function* () {
@@ -108,3 +107,6 @@ exports.confirmationCodeValidation = (0, express_validator_1.body)('code').trim(
     }
     return true;
 }));
+//login
+exports.loginOrEmailValidation = (0, express_validator_1.body)('loginOrEmail').trim().not().isEmpty().withMessage('Not a string');
+exports.passwordAuthValidation = (0, express_validator_1.body)('password').trim().not().isEmpty().withMessage('Not a string');

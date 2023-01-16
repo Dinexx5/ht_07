@@ -1,6 +1,5 @@
-import {userAccountsCollection, usersCollection} from "./db";
+import {userAccountsCollection} from "./db";
 import {
-    userDbType,
     userViewModel,
     paginationQuerys,
     paginatedViewModel, userAccountDbType

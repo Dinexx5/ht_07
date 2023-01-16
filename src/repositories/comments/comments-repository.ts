@@ -2,7 +2,6 @@ import {commentsCollection} from "../db";
 import {
     commentDbType,
     commentViewModel, userAccountDbType,
-    userDbType,
 } from "../../models/models";
 import {ObjectId} from "mongodb";
 

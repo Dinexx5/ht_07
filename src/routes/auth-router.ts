@@ -71,20 +71,6 @@ authRouter.post('/registration',
 
 })
 
-authRouter.post('/registration-confirmation',
-    confirmationCodeValidation,
-    inputValidationMiddleware,
-    async(req: RequestWithBody<registrationConfirmationInput>, res: Response) => {
-
-    const isConfirmed = await authService.confirmEmail(req.body.code)
-    if (!isConfirmed) {
-        return res.send(400)
-    }
-    res.send(204)
-
-})
-
-
 authRouter.post('/registration-email-resending',
     emailValidationForResending,
     inputValidationMiddleware,
@@ -97,6 +83,19 @@ authRouter.post('/registration-email-resending',
     if (!isEmailResend) {
         res.send({"errorsMessages": 'can not send email. try later'})
         return
+    }
+    res.send(204)
+
+    })
+
+authRouter.post('/registration-confirmation',
+    confirmationCodeValidation,
+    inputValidationMiddleware,
+    async(req: RequestWithBody<registrationConfirmationInput>, res: Response) => {
+
+    const isConfirmed = await authService.confirmEmail(req.body.code)
+    if (!isConfirmed) {
+        return res.send(400)
     }
     res.send(204)
 

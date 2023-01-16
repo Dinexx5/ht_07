@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.bearerAuthMiddleware = exports.basicAuthMiddleware = void 0;
 const jwt_service_1 = require("../application/jwt-service");
-const users_service_1 = require("../domain/users-service");
+const auth_service_1 = require("../domain/auth-service");
 const basicAuthMiddleware = (req, res, next) => {
     const loginPass = req.headers.authorization;
     if (loginPass === "Basic YWRtaW46cXdlcnR5") {
@@ -29,7 +29,7 @@ const bearerAuthMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 
     const token = req.headers.authorization.split(' ')[1];
     const userId = yield jwt_service_1.jwtService.getUserIdByToken(token);
     if (userId) {
-        req.user = yield users_service_1.usersService.findUserById(userId);
+        req.user = yield auth_service_1.authService.findUserById(userId);
         next();
         return;
     }

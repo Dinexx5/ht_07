@@ -20,6 +20,7 @@ const uuid_1 = require("uuid");
 const add_1 = __importDefault(require("date-fns/add"));
 const email_service_1 = require("./email-service");
 exports.authService = {
+    //registration
     createUser(body) {
         return __awaiter(this, void 0, void 0, function* () {
             const { login, email, password } = body;
@@ -54,12 +55,31 @@ exports.authService = {
             return createdAccount;
         });
     },
+    // req.user in bearerAuthMiddleware
+    findUserById(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield users_repository_db_1.usersRepository.findUserById(userId);
+        });
+    },
+    resendEmail(email, code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield email_service_1.emailService.sendEmailForConfirmation(email, code);
+            }
+            catch (error) {
+                console.error(error);
+                return false;
+            }
+            return true;
+        });
+    },
     confirmEmail(code) {
         return __awaiter(this, void 0, void 0, function* () {
             let user = yield users_repository_db_1.usersRepository.findUserByConfirmationCode(code);
             return yield users_repository_db_1.usersRepository.updateConfirmation(user._id);
         });
     },
+    //login
     checkCredentials(body) {
         return __awaiter(this, void 0, void 0, function* () {
             const { loginOrEmail, password } = body;
@@ -75,18 +95,6 @@ exports.authService = {
                 return null;
             }
             return user;
-        });
-    },
-    resendEmail(email, code) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield email_service_1.emailService.sendEmailForConfirmation(email, code);
-            }
-            catch (error) {
-                console.error(error);
-                return false;
-            }
-            return true;
         });
     }
 };

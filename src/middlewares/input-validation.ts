@@ -25,7 +25,7 @@ export const inputValidationMiddleware = (req: Request, res: Response, next: Nex
     }
 }
 
-
+//params
 export const objectIdIsValidMiddleware = (req: Request, res: Response, next: NextFunction) => {
     if (ObjectId.isValid(req.params.id)) {
         next()
@@ -54,8 +54,11 @@ export const blogIdlValidation = body('blogId').trim().not().isEmpty().withMessa
         return true
 
     })
+//comments validation
+export const commentContentValidation = body('content').trim().isLength({min: 20, max: 300}).withMessage('Incorrect length').not().isEmpty().withMessage('Not a string')
 
-//users validation
+
+//registration validation
 export const loginValidation = body('login').trim().isLength({min: 3, max: 10}).withMessage('Incorrect length').matches(/^[a-zA-Z0-9_-]*$/).withMessage('Incorrect login pattern')
     .custom(async (login) => {
         const isUser: userAccountDbType | null = await usersRepository.findByLoginOrEmail(login)
@@ -64,6 +67,7 @@ export const loginValidation = body('login').trim().isLength({min: 3, max: 10}).
         }
         return true
     })
+
 export const passwordValidation = body('password').trim().isLength({min: 6, max: 20}).withMessage('Incorrect length').not().isEmpty().withMessage('Not a string')
 
 export const emailValidation = body('email').trim().isEmail().withMessage('Not an email')
@@ -74,6 +78,8 @@ export const emailValidation = body('email').trim().isEmail().withMessage('Not a
         }
         return true
     })
+
+//resending email
 export const emailValidationForResending = body('email').trim().isEmail().withMessage('Not an email')
     .custom(async (email) => {
         const isUser: userAccountDbType | null = await usersRepository.findByLoginOrEmail(email)
@@ -85,14 +91,6 @@ export const emailValidationForResending = body('email').trim().isEmail().withMe
         }
         return true
     })
-
-//auth validation
-
-export const loginOrEmailValidation = body('loginOrEmail').trim().not().isEmpty().withMessage('Not a string')
-export const passwordAuthValidation = body('password').trim().not().isEmpty().withMessage('Not a string')
-
-//comments validation
-export const commentContentValidation = body('content').trim().isLength({min: 20, max: 300}).withMessage('Incorrect length').not().isEmpty().withMessage('Not a string')
 
 //confirmation code validation
 export const confirmationCodeValidation = body('code').trim().not().isEmpty().withMessage('Not a string')
@@ -112,4 +110,11 @@ export const confirmationCodeValidation = body('code').trim().not().isEmpty().wi
         }
         return true
     })
+
+
+//login
+
+export const loginOrEmailValidation = body('loginOrEmail').trim().not().isEmpty().withMessage('Not a string')
+export const passwordAuthValidation = body('password').trim().not().isEmpty().withMessage('Not a string')
+
 

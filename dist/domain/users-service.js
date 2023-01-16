@@ -49,15 +49,4 @@ exports.usersService = {
             return yield users_repository_db_1.usersRepository.deleteUserById(userId);
         });
     },
-    // req.user in bearerAuthMiddleware
-    findUserById(userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield users_repository_db_1.usersRepository.findUserById(userId);
-        });
-    },
-    findUserByEmail(email) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield users_repository_db_1.usersRepository.findUserByEmail(email);
-        });
-    },
 };

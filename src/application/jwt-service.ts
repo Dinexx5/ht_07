@@ -1,4 +1,4 @@
-import {userAccountDbType, userDbType} from "../models/models";
+import {userAccountDbType} from "../models/models";
 import jwt from 'jsonwebtoken'
 import {ObjectId} from "mongodb";
 import {settings} from "../settings";

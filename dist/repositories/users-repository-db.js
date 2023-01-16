@@ -13,6 +13,7 @@ exports.usersRepository = void 0;
 const db_1 = require("./db");
 const mongodb_1 = require("mongodb");
 exports.usersRepository = {
+    //for superAdmin:
     createUserByAdmin(newDbUser) {
         return __awaiter(this, void 0, void 0, function* () {
             yield db_1.userAccountsCollection.insertOne(newDbUser);
@@ -22,18 +23,6 @@ exports.usersRepository = {
                 email: newDbUser.accountData.email,
                 createdAt: newDbUser.accountData.createdAt
             };
-        });
-    },
-    createUser(newDbUser) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield db_1.userAccountsCollection.insertOne(newDbUser);
-            return newDbUser;
-        });
-    },
-    //checkCredentials
-    findByLoginOrEmail(loginOrEmail) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield db_1.userAccountsCollection.findOne({ $or: [{ 'accountData.email': loginOrEmail }, { 'accountData.login': loginOrEmail }] });
         });
     },
     deleteUserById(id) {
@@ -50,18 +39,22 @@ exports.usersRepository = {
             return user;
         });
     },
-    findUserByEmail(email) {
+    // for regular creation of user
+    createUser(newDbUser) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield db_1.userAccountsCollection.findOne({ 'accountData.email': email });
+            yield db_1.userAccountsCollection.insertOne(newDbUser);
+            return newDbUser;
         });
     },
+    findByLoginOrEmail(loginOrEmail) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield db_1.userAccountsCollection.findOne({ $or: [{ 'accountData.email': loginOrEmail }, { 'accountData.login': loginOrEmail }] });
+        });
+    },
+    //email resending
     findUserByConfirmationCode(code) {
         return __awaiter(this, void 0, void 0, function* () {
-            let user = yield db_1.userAccountsCollection.findOne({ 'emailConfirmation.confirmationCode': code });
-            if (!user) {
-                return null;
-            }
-            return user;
+            return yield db_1.userAccountsCollection.findOne({ 'emailConfirmation.confirmationCode': code });
         });
     },
     updateConfirmation(_id) {

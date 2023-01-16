@@ -1,4 +1,4 @@
-import {userAccountDbType, userDbType} from "../models/models";
+import {userAccountDbType} from "../models/models";
 
 
 declare global {
